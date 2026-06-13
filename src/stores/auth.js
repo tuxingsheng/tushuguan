@@ -15,6 +15,14 @@ export const useAuthStore = defineStore('auth', () => {
     return data
   }
 
+  async function register(email, password) {
+    loading.value = true
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    loading.value = false
+    if (error) throw error
+    return data
+  }
+
   async function logout() {
     await supabase.auth.signOut()
     user.value = null
@@ -26,5 +34,5 @@ export const useAuthStore = defineStore('auth', () => {
     return user.value
   }
 
-  return { user, loading, login, logout, checkSession }
+  return { user, loading, login, register, logout, checkSession }
 })

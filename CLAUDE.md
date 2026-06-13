@@ -34,7 +34,7 @@ src/
 ├── router/
 │   └── index.js               # 路由表 + beforeEach 守卫（检查 session）
 ├── stores/
-│   ├── auth.js                # 登录 / 登出 / 会话
+│   ├── auth.js                # 登录 / 注册 / 登出 / 会话
 │   ├── books.js               # 图书 CRUD + updateBookStock（安全库存 RPC）
 │   ├── members.js             # 读者 CRUD
 │   └── borrowings.js          # 借阅管理（fetch 时自动标记逾期 → borrow_book/return_book RPC）
@@ -42,7 +42,7 @@ src/
 │   ├── AppLayout.vue          # 主布局：顶栏 + 侧栏 + <router-view>
 │   └── SideMenu.vue           # Naive Menu（覆写 CSS 变量适配深色/浅色侧栏）
 ├── views/
-│   ├── Login.vue              # 登录页
+│   ├── Login.vue              # 登录/注册页（双模式切换）
 │   ├── Dashboard.vue          # 统计卡片（computed 响应式），逾期 > 0 时高亮
 │   ├── Books.vue              # 图书列表（搜索 / 分类筛选 / 分页），空状态 n-empty
 │   ├── BookForm.vue           # 图书新增/编辑（编辑时库存走安全 RPC）
@@ -99,8 +99,8 @@ supabase/
 ## 认证流程
 
 1. Supabase Auth（邮箱 + 密码）
-2. 在 Supabase Dashboard → Authentication 手动创建管理员账号
-3. `stores/auth.js`：`login()` → `supabase.auth.signInWithPassword()`；`logout()` → `supabase.auth.signOut()`
+2. 注册：登录页切换至注册模式 → `auth.register()` → `supabase.auth.signUp()`
+3. 登录：`auth.login()` → `supabase.auth.signInWithPassword()`
 4. `router/index.js` 的 `beforeEach` 检查 `supabase.auth.getSession()`
 5. AppLayout 退出按钮调用 `auth.logout()` 后手动 `router.push('/login')`
 

@@ -241,12 +241,6 @@ html, body, #app {
     max-width: 95vw !important;
   }
 
-  /* 登录卡片 */
-  .login-card {
-    width: 90vw !important;
-    padding: 28px 20px 24px !important;
-  }
-
   /* 按钮触摸友好 */
   .n-button {
     min-height: 40px;

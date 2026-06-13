@@ -17,7 +17,8 @@ function checkMobile() {
   sidebarCollapsed.value = isMobile.value
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await auth.checkSession()
   checkMobile()
   window.addEventListener('resize', checkMobile)
 })
@@ -99,8 +100,8 @@ function toggleSidebar() {
       </div>
       <n-dropdown :options="dropdownOptions" @select="handleSelect" trigger="click">
         <n-space align="center" style="cursor: pointer">
-          <n-avatar size="small" round :style="{ background: 'var(--accent)' }">管</n-avatar>
-          <span class="header-username">管理员</span>
+          <n-avatar v-if="!isMobile" size="small" round :style="{ background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center' }">{{ auth.user?.email?.charAt(0).toUpperCase() || '管' }}</n-avatar>
+          <span class="header-username">{{ auth.user?.email || '管理员' }}</span>
         </n-space>
       </n-dropdown>
     </n-layout-header>
@@ -169,7 +170,11 @@ function toggleSidebar() {
     font-size: 14px;
   }
   .header-username {
-    display: none;
+    font-size: 12px;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 </style>
